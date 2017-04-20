@@ -1,11 +1,15 @@
 <?php
 
-define("BASE_URL", "http://mycms.dev/admin");
+define("BASE_URL", "http://mycms.dev/admin/");
 
 function confirm_query($r, $q) {
     if (!$r) {
         die("Loi khi thuc hien query! Query is: \n" . $q);
     }
+}
+
+function redirect_to($url = '') {
+    header("Location: " . BASE_URL . $url);
 }
 
 function count_category() {
@@ -61,6 +65,34 @@ function count_comment() {
         return $kq;
     } else {
         return null;
+    }
+}
+
+function showNotice() {
+    if (isset($_SESSION['notice'])) {
+        echo "
+            <nav>
+                <div class=\"nav-wrapper\">
+                  <div class=\"col m12\ center-align green\">
+                       {$_SESSION['notice']}
+                  </div>
+                </div>
+              </nav>
+        ";
+        session_unset('notice');
+    }
+
+    if (isset($_SESSION['error'])) {
+        echo "
+            <nav>
+                <div class=\"nav-wrapper\">
+                  <div class=\"col m12\ center-align\">
+                       {$_SESSION['error']}
+                  </div>
+                </div>
+              </nav>
+        ";
+        session_unset('error');
     }
 }
 

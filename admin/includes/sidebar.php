@@ -3,8 +3,8 @@
         <li>
             <div class="collapsible-header"><i class="material-icons">filter_drama</i>Manage Categories</div>
             <div class="collapsible-body">
-                <p><a href="">Show Categories</a></p>
-                <p><a href="">Add category</a></p>
+                <p><a href="show_categories.php">Show Categories</a></p>
+                <p><a href="add_category.php">Add category</a></p>
             </div>
         </li>
         <li>
