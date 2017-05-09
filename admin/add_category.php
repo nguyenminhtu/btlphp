@@ -14,9 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (mysqli_affected_rows($dbc) == 1) {
         redirect_to('show_categories.php');
-        $_SESSION['notice'] = "Them moi thanh cong";
+        echo "<script>Materialize.toast('Category was created successfully', 3000);</script>";
     } else {
-        echo "Loi ko them dc";
+        echo "Error when insert to database. Sorry for inconvenience !";
     }
 }
 ?>

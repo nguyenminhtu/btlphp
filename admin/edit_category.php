@@ -28,26 +28,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         confirm_query($r, $q);
 
         if (mysqli_affected_rows($dbc) == 1) {
-            $_SESSION['notice'] = "Cập nhật thành công";
             redirect_to("show_categories.php");
         }
-    } else {
-        $_SESSION['error'] = "Ko cap nhat duoc";
     }
 
 
 }
 ?>
-
-    <div class="container">
-        <div class="row center-align">
-            <div class="col m8 offset-m2">
-                <?php
-                showNotice();
-                ?>
-            </div>
-        </div>
-    </div>
 
     <main>
         <div class="">

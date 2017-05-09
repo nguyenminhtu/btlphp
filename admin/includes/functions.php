@@ -68,32 +68,54 @@ function count_comment() {
     }
 }
 
-function showNotice() {
-    if (isset($_SESSION['notice'])) {
-        echo "
-            <nav>
-                <div class=\"nav-wrapper\">
-                  <div class=\"col m12\ center-align green\">
-                       {$_SESSION['notice']}
-                  </div>
-                </div>
-              </nav>
-        ";
-        session_unset('notice');
+
+function pagination($display = 5, $id, $table, $url) {
+    global $dbc;
+    global $start;
+
+    if (isset($_GET['p']) && filter_var($_GET['p'], FILTER_VALIDATE_INT, array('min_range' => 1))) {
+        $page = $_GET['p'];
+    } else {
+        $q = "SELECT COUNT({$id}) FROM {$table}";
+        $r = mysqli_query($dbc, $q);
+
+        confirm_query($r, $q);
+
+        list($record) = mysqli_fetch_array($r, MYSQLI_NUM);
+
+        // kiem tra so bai post co lon hon so bai trong 1 page hay ko
+        if ($record > $display) {
+            $page = ceil($record / $display);
+        } else {
+            $page = 1;
+        }
     }
 
-    if (isset($_SESSION['error'])) {
-        echo "
-            <nav>
-                <div class=\"nav-wrapper\">
-                  <div class=\"col m12\ center-align\">
-                       {$_SESSION['error']}
-                  </div>
-                </div>
-              </nav>
-        ";
-        session_unset('error');
-    }
+    $output = "<div class='row center-align'><ul class='pagination'>";
+    if ($page > 1) {
+        $current_page = ($start / $display) + 1;
+
+        // neu khong phai o trang dau thi se hien thi trang truoc
+        if ($current_page != 1) {
+            $output .= "<li><a href='{$url}.php?s=".($start - $display)."&p={$page}'>Previous</a></li>";
+        }
+
+        // hien thi nhung trang con lai
+        for ($i = 1; $i <= $page; $i++) {
+            if ($i != $current_page) {
+                $output .= "<li class='waves-effect'><a href='{$url}.php?s=".($display * ($i - 1))."&p={$page}'>{$i}</a></li>";
+            } else {
+                $output .= "<li class='active'><a>{$i}</a></li>";
+            }
+        } // end for
+
+        if ($current_page != $page) {
+            $output .= "<li><a href='{$url}.php?s=".($start + $display)."&p={$page}'>Next</a></li>";
+        }
+    } // end section pagination
+    $output .= "</ul></div>";
+
+    echo $output;
 }
 
 ?>
