@@ -124,8 +124,13 @@ function sendmail($receive, $body)
     $mail->isSMTP();                                      // Set mailer to use SMTP
     $mail->Host = 'smtp.gmail.com;';  // Specify main and backup SMTP servers
     $mail->SMTPAuth = true;                               // Enable SMTP authentication
+<<<<<<< HEAD
     $mail->Username = 'gmail của ông';                 // SMTP username
     $mail->Password = 'mật khẩu gamil của ông';                           // SMTP password
+=======
+    $mail->Username = '';                 // SMTP username
+    $mail->Password = '';                           // SMTP password
+>>>>>>> f1d2f11cfe8c20afd72a4514eaff57956841452a
     $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
     $mail->Port = 25;                                    // TCP port to connect to
 
