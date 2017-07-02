@@ -1,4 +1,7 @@
-*{margin: 0; padding: 0;}
+* {
+    margin: 0;
+    padding: 0;
+}
 
 body {
     display: flex;
@@ -10,17 +13,35 @@ main {
     flex: 1 0 auto;
 }
 
-.popular-post .row{padding-top: 20px !important;}
+.popular-post .row {
+    padding-top: 20px !important;
+}
 
-.material-icons{
+.material-icons {
     display: inline-flex;
     vertical-align: bottom;
 }
 
-.modal{
+.modal {
     width: 400px;
 }
-#registerModal{
+
+#registerModal {
     width: 450px !important;
     max-height: 100% !important;
+}
+
+ul#nav-mobile.hide-on-med-and-down img {
+    margin-top: 5px;
+}
+
+a#avatar {
+    width: 80px;
+    height: 50px;
+    align-content: center;
+}
+
+a#avatar img {
+    width: 100%;
+    height: 100%;
 }

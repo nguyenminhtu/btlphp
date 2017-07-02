@@ -7,7 +7,7 @@
  * Repo: https://github.com/bartholomej/material-scrollTop
  * Issues: https://github.com/bartholomej/material-scrollTop/issues
  */
-(function($) {
+(function ($) {
     function mScrollTop(element, settings) {
 
         var _ = this,
@@ -33,7 +33,7 @@
         breakpoint = _.options.revealPosition !== 'bottom' ? _.revealElement.offset().top : _.revealElement.offset().top + _.revealElement.height();
         scrollTo = element.offsetTop + _.options.padding;
 
-        $(document).scroll(function() {
+        $(document).scroll(function () {
             if (breakpoint < $(document).scrollTop()) {
                 _.btnElement.addClass(_.revealClass);
             } else {
@@ -41,11 +41,11 @@
             }
         });
 
-        _.btnElement.click(function() {
+        _.btnElement.click(function () {
             var trigger = true;
             $('html, body').animate({
                 scrollTop: scrollTo
-            }, _.options.duration, _.options.easing, function() {
+            }, _.options.duration, _.options.easing, function () {
                 if (trigger) { // Fix callback triggering twice on chromium
                     trigger = false;
                     var callback = _.options.onScrollEnd;
@@ -58,7 +58,7 @@
         });
     }
 
-    $.fn.materialScrollTop = function() {
+    $.fn.materialScrollTop = function () {
         var _ = this,
             opt = arguments[0],
             l = _.length,

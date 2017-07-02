@@ -1,5 +1,8 @@
 <?php
 require_once("includes/navigation.php");
+if (!is_admin()) {
+    redirect_to("login.php");
+}
 ?>
 
     <main>
@@ -28,12 +31,12 @@ require_once("includes/navigation.php");
                         <tbody>
                         <?php
                         // pagination
-                        $display = 10;
+                        $display = 5;
 
                         $start = (isset($_GET['s']) && filter_var($_GET['s'], FILTER_VALIDATE_INT, array('min_range' => 1))) ? $_GET['s'] : 0;
 
                         $q = "SELECT u.uid, u.uname, u.uemail, u.uavatar, u.urole, DATE_FORMAT(u.created_at, '%h:%i %p %d/%m/%Y') AS date, u.uactive, COUNT(cm.cmid) AS count_comment";
-                        $q.= " FROM user AS u LEFT JOIN comment AS cm ON u.uid = cm.uid GROUP BY u.uid ORDER BY u.created_at DESC LIMIT {$start}, {$display}";
+                        $q .= " FROM user AS u LEFT JOIN comment AS cm ON u.uid = cm.uid GROUP BY u.uid ORDER BY u.created_at DESC LIMIT {$start}, {$display}";
                         $r = mysqli_query($dbc, $q);
                         confirm_query($r, $q);
 
@@ -45,7 +48,7 @@ require_once("includes/navigation.php");
                                             <td>{$user['uname']}</td>
                                             <td>{$user['uemail']}</td>
                                             <td>
-                                                Avatar
+                                                <img src='../public/uploads/avatars/{$user['uavatar']}' alt='{$user['uname']}' width='96' height='100'>
                                             </td>
                                             <td>";
 
@@ -59,8 +62,16 @@ require_once("includes/navigation.php");
                                 echo "</td>
                                             <td>{$user['count_comment']}</td>
                                             <td>{$user['date']}</td>
-                                            <td><a href=''><i class='material-icons yellow-text'>edit</i></a></td>
-                                            <td><a class='remove-user red-text' id-delete='{$user['uid']}' style='cursor: pointer;'><i class='material-icons'>delete</i></a></td>
+                                            <td><a href='edit_user.php?uid={$user['uid']}'><i class='material-icons yellow-text'>edit</i></a></td>
+                                            ";
+
+                                if ($user['urole'] != 0) {
+                                    echo "
+                                        <td><a class='remove-user red-text' id-delete='{$user['uid']}' style='cursor: pointer;'><i class='material-icons'>delete</i></a></td>
+                                    ";
+                                }
+
+                                echo "
                                         </tr>
                                     ";
                             }

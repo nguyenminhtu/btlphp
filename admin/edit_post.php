@@ -1,12 +1,14 @@
 <?php
 require_once("includes/navigation.php");
+if (!is_admin()) {
+    redirect_to("login.php");
+}
 ?>
-
 
 
 <?php
 
-if (isset($_GET['pid']) && filter_var($_GET['pid'], FILTER_VALIDATE_INT, array('min_range'=>1))) {
+if (isset($_GET['pid']) && filter_var($_GET['pid'], FILTER_VALIDATE_INT, array('min_range' => 1))) {
 
     $pid = $_GET['pid'];
 
@@ -29,8 +31,6 @@ if (isset($_GET['pid']) && filter_var($_GET['pid'], FILTER_VALIDATE_INT, array('
 ?>
 
 
-
-
 <?php
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $errors = array();
@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
     // category id
-    if (filter_var($trimmed['cid'], FILTER_VALIDATE_INT, array('min_range'=>1))) {
+    if (filter_var($trimmed['cid'], FILTER_VALIDATE_INT, array('min_range' => 1))) {
         $cid = $trimmed['cid'];
     } else {
         $errors[] = "cid";
@@ -69,8 +69,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $pimage = uniqid(rand(), true) . '.' . $ext;
 
             // kiem tra upload anh co thanh cong hay ko
-            if (unlink("../public/uploads/images/".$trimmed['old_image'])) {
-                if (!move_uploaded_file($_FILES['pimage']['tmp_name'], "../public/uploads/images/".$pimage)) {
+            if (unlink("../public/uploads/images/" . $trimmed['old_image'])) {
+                if (!move_uploaded_file($_FILES['pimage']['tmp_name'], "../public/uploads/images/" . $pimage)) {
                     $errors[] = "upload failed";
                 }
             } else {
@@ -116,8 +116,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 ?>
 
 
-
-
     <main>
         <div class="">
             <div class="row">
@@ -132,23 +130,27 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             echo $result;
                         }
                         ?>
-                        <h3>Sửa post <small><i><?php echo $ptitle_edit; ?></i></small></h3>
+                        <h3>Sửa post
+                            <small><i><?php echo $ptitle_edit; ?></i></small>
+                        </h3>
                         <hr>
                         <div class="input-field">
-                            <input id="ptitle" type="text" class="validate" name="ptitle" autofocus required value="<?php echo (isset($ptitle_edit)) ? $ptitle_edit : '' ?>">
+                            <input id="ptitle" type="text" class="validate" name="ptitle" autofocus required
+                                   value="<?php echo (isset($ptitle_edit)) ? $ptitle_edit : '' ?>">
                             <label for="ptitle">Post title</label>
                         </div>
-                        
-                        
+
+
                         <div class="input-field">
                             <div class="row">
                                 <div class="col m6">
-                                    <img class="responsive-img" src="/public/uploads/images/<?php echo $pimage_edit; ?>" alt="<?php echo $ptitle_edit; ?>">
+                                    <img class="responsive-img" src="/public/uploads/images/<?php echo $pimage_edit; ?>"
+                                         alt="<?php echo $ptitle_edit; ?>">
                                     <input type="hidden" name="old_image" value="<?php echo $pimage_edit; ?>">
                                 </div>
                             </div>
                         </div>
-                        
+
 
                         <div class="input-field">
                             <div class="file-field input-field">

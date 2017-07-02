@@ -1,6 +1,10 @@
 <?php
+session_start();
 require_once "includes/connect.php";
 require_once "includes/functions.php";
+if (!is_admin()) {
+    redirect_to("login.php");
+}
 
 // kiem tra category id co hop le ko de xoa
 if (isset($_GET['cid']) && filter_var($_GET['cid'], FILTER_VALIDATE_INT)) {
@@ -23,6 +27,12 @@ if (isset($_GET['cid']) && filter_var($_GET['cid'], FILTER_VALIDATE_INT)) {
                 confirm_query($r2, $q2);
 
             }
+        }
+        $q3 = "DELETE FROM post WHERE cid = {$cid}";
+        $r3 = mysqli_query($dbc, $q3);
+        confirm_query($r3, $q3);
+
+        if (mysqli_affected_rows($dbc) > 0) {
             echo "oke";
         } else {
             echo "fail";
@@ -42,6 +52,7 @@ if (isset($_GET['pid']) && filter_var($_GET['pid'], FILTER_VALIDATE_INT)) {
     confirm_query($r, $q);
 
     if (mysqli_affected_rows($dbc) == 1) {
+        //xoa het tat cac comment
         $q1 = "DELETE FROM comment WHERE pid = {$pid}";
         $r1 = mysqli_query($dbc, $q1);
         confirm_query($r1, $q1);
@@ -51,6 +62,7 @@ if (isset($_GET['pid']) && filter_var($_GET['pid'], FILTER_VALIDATE_INT)) {
         } else {
             echo "fail";
         }
+
     } else {
         echo "fail";
     }

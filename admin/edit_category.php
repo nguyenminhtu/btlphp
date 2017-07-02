@@ -1,5 +1,8 @@
 <?php
 require_once("includes/navigation.php");
+if (!is_admin()) {
+    redirect_to("login.php");
+}
 ?>
 
 
@@ -16,7 +19,6 @@ if (mysqli_num_rows($r) > 0) {
     list($cname) = mysqli_fetch_array($r, MYSQLI_NUM);
 }
 ?>
-
 
 
 <?php
@@ -45,10 +47,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
                 <div class="col m10 center-align">
                     <form action="" method="post">
-                        <h3>Sửa category <small><?php if(isset($cname)) echo $cname; ?></small></h3>
+                        <h3>Sửa category
+                            <small><?php if (isset($cname)) echo $cname; ?></small>
+                        </h3>
                         <hr>
                         <div class="input-field">
-                            <input id="cname" type="text" class="validate" name="cname" value="<?php if(isset($cname)) echo $cname; ?>">
+                            <input id="cname" type="text" class="validate" name="cname"
+                                   value="<?php if (isset($cname)) echo $cname; ?>">
                         </div>
 
                         <div class="input-field">

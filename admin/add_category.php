@@ -1,5 +1,8 @@
 <?php
 require_once("includes/navigation.php");
+if (!is_admin()) {
+    redirect_to("login.php");
+}
 ?>
 
 <?php

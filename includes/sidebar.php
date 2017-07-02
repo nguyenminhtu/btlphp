@@ -23,7 +23,7 @@
 
                     while ($cate = mysqli_fetch_array($r, MYSQLI_ASSOC)) {
 
-                        echo "<a href='show_category.php?cid={$cate['cid']}&cname=".urlencode($cate['cname'])."' class='collection-item'>{$cate['cname']}</a>";
+                        echo "<a href='show_category.php?cid={$cate['cid']}&cname=" . urlencode($cate['cname']) . "' class='collection-item'>{$cate['cname']}</a>";
 
                     }
                     ?>
@@ -47,11 +47,11 @@
                     while ($post = mysqli_fetch_array($r1, MYSQLI_ASSOC)) {
 
                         echo "
-                            <a href='show_post.php?pid={$post['pid']}&ptitle=".urlencode($post['ptitle'])."' class='collection-item'>
+                            <a href='show_post.php?pid={$post['pid']}&ptitle=" . urlencode($post['ptitle']) . "' class='collection-item'>
                                 <div class='card-panel grey lighten-5 z-depth-1 popular-post'>
                                     <div class='row valign-wrapper'>
                                         <div class='col m4'>
-                                            <img src='public/uploads/images/".$post['pimage']."' alt='' class='circle responsive-img'>
+                                            <img src='public/uploads/images/" . $post['pimage'] . "' alt='' class='circle responsive-img'>
                                         </div>
                                         <div class='col m8'>
                                               <span class=\"black-text\">

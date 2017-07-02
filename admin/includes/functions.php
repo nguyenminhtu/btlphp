@@ -2,17 +2,20 @@
 
 define("BASE_URL", "http://mycms.dev/admin/");
 
-function confirm_query($r, $q) {
+function confirm_query($r, $q)
+{
     if (!$r) {
         die("Loi khi thuc hien query! Query is: \n" . $q);
     }
 }
 
-function redirect_to($url = '') {
+function redirect_to($url = '')
+{
     header("Location: " . BASE_URL . $url);
 }
 
-function count_category() {
+function count_category()
+{
     global $dbc;
     $q = "SELECT COUNT(cid) FROM category";
     $r = mysqli_query($dbc, $q);
@@ -26,10 +29,11 @@ function count_category() {
     }
 }
 
-function count_post() {
+function count_post()
+{
     global $dbc;
     $q = "SELECT COUNT(pid) FROM post";
-    $r = mysqli_query($dbc, $q) ;
+    $r = mysqli_query($dbc, $q);
     confirm_query($r, $q);
 
     if (mysqli_num_rows($r) > 0) {
@@ -40,7 +44,8 @@ function count_post() {
     }
 }
 
-function count_user() {
+function count_user()
+{
     global $dbc;
     $q = "SELECT COUNT(uid) FROM user";
     $r = mysqli_query($dbc, $q);
@@ -54,7 +59,8 @@ function count_user() {
     }
 }
 
-function count_comment() {
+function count_comment()
+{
     global $dbc;
     $q = "SELECT COUNT(cmid) FROM comment";
     $r = mysqli_query($dbc, $q);
@@ -69,7 +75,8 @@ function count_comment() {
 }
 
 
-function pagination($display = 5, $id, $table, $url) {
+function pagination($display = 5, $id, $table, $url)
+{
     global $dbc;
     global $start;
 
@@ -97,25 +104,31 @@ function pagination($display = 5, $id, $table, $url) {
 
         // neu khong phai o trang dau thi se hien thi trang truoc
         if ($current_page != 1) {
-            $output .= "<li><a href='{$url}.php?s=".($start - $display)."&p={$page}'>Previous</a></li>";
+            $output .= "<li><a href='{$url}.php?s=" . ($start - $display) . "&p={$page}'>Previous</a></li>";
         }
 
         // hien thi nhung trang con lai
         for ($i = 1; $i <= $page; $i++) {
             if ($i != $current_page) {
-                $output .= "<li class='waves-effect'><a href='{$url}.php?s=".($display * ($i - 1))."&p={$page}'>{$i}</a></li>";
+                $output .= "<li class='waves-effect'><a href='{$url}.php?s=" . ($display * ($i - 1)) . "&p={$page}'>{$i}</a></li>";
             } else {
                 $output .= "<li class='active'><a>{$i}</a></li>";
             }
         } // end for
 
         if ($current_page != $page) {
-            $output .= "<li><a href='{$url}.php?s=".($start + $display)."&p={$page}'>Next</a></li>";
+            $output .= "<li><a href='{$url}.php?s=" . ($start + $display) . "&p={$page}'>Next</a></li>";
         }
     } // end section pagination
     $output .= "</ul></div>";
 
     echo $output;
+}
+
+
+function is_admin()
+{
+    return (isset($_SESSION['urole']) && $_SESSION['urole'] == 0);
 }
 
 ?>

@@ -1,5 +1,8 @@
 <?php
 require_once("includes/navigation.php");
+if (!is_admin()) {
+    redirect_to("login.php");
+}
 ?>
 
 <?php
@@ -13,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 
     // category id
-    if (filter_var($trimmed['cid'], FILTER_VALIDATE_INT, array('min_range'=>1))) {
+    if (filter_var($trimmed['cid'], FILTER_VALIDATE_INT, array('min_range' => 1))) {
         $cid = $trimmed['cid'];
     } else {
         $errors[] = "cid";
@@ -40,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $pimage = uniqid(rand(), true) . '.' . $ext;
 
             // kiem tra upload anh co thanh cong hay ko
-            if (!move_uploaded_file($_FILES['pimage']['tmp_name'], "../public/uploads/images/".$pimage)) {
+            if (!move_uploaded_file($_FILES['pimage']['tmp_name'], "../public/uploads/images/" . $pimage)) {
 
                 $errors[] = "upload failed";
 
@@ -58,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (empty($errors)) {
 
         $q = "INSERT INTO post (ptitle, pimage, pcontent, cid, created_at) VALUES ";
-        $q.= " ('{$title}', '{$pimage}', '{$content}', $cid, NOW())";
+        $q .= " ('{$title}', '{$pimage}', '{$content}', $cid, NOW())";
         $r = mysqli_query($dbc, $q);
         confirm_query($r, $q);
 
@@ -93,40 +96,41 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <div class="col m10 center-align">
                     <form action="" method="post" enctype="multipart/form-data">
                         <?php
-                            if (isset($result)) {
-                                echo $result;
-                            }
+                        if (isset($result)) {
+                            echo $result;
+                        }
                         ?>
                         <h3>Thêm mới post</h3>
                         <hr>
                         <div class="input-field">
-                            <input id="ptitle" type="text" class="validate" name="ptitle" autofocus required value="<?php echo isset($_POST['ptitle']) ? $_POST['ptitle'] : '' ?>">
+                            <input id="ptitle" type="text" class="validate" name="ptitle" autofocus required
+                                   value="<?php echo isset($_POST['ptitle']) ? $_POST['ptitle'] : '' ?>">
                             <label for="ptitle">Post title</label>
                         </div>
 
                         <div class="input-field">
                             <div class="file-field input-field">
                                 <?php
-                                    if (!empty($errors) && in_array('wrong format', $errors)) {
-                                        echo "<p class='red-text'>This image is wrong format !</p>";
-                                    }
-                                    if (!empty($errors) && in_array('upload failed', $errors)) {
-                                        echo "<p class='red-text'>Could not upload image !</p>";
-                                    }
+                                if (!empty($errors) && in_array('wrong format', $errors)) {
+                                    echo "<p class='red-text'>This image is wrong format !</p>";
+                                }
+                                if (!empty($errors) && in_array('upload failed', $errors)) {
+                                    echo "<p class='red-text'>Could not upload image !</p>";
+                                }
                                 ?>
-                              <div class="btn">
-                                <span>Post Image</span>
-                                <input type="file" name="pimage" required>
-                              </div>
-                              <div class="file-path-wrapper">
-                                <input class="file-path validate" type="text" required name="pimage">
-                              </div>
+                                <div class="btn">
+                                    <span>Post Image</span>
+                                    <input type="file" name="pimage" required>
+                                </div>
+                                <div class="file-path-wrapper">
+                                    <input class="file-path validate" type="text" required name="pimage">
+                                </div>
                             </div>
                         </div>
 
                         <div class="input-field">
                             <textarea name="pcontent" id="pcontent" rows="10" class="materialize-textarea" required><?php
-                                    echo (isset($_POST['pcontent'])) ? $_POST['pcontent'] : ''
+                                echo (isset($_POST['pcontent'])) ? $_POST['pcontent'] : ''
                                 ?></textarea>
                             <label for="pcontent">Post content</label>
                         </div>
@@ -134,23 +138,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         <div class="input-field">
                             <select name="cid" required>
                                 <?php
-                                    if (!empty($errors) && in_array('cid', $errors)) {
-                                        echo "<p class='red-text'>Category id is not valid</p>";
-                                    }
+                                if (!empty($errors) && in_array('cid', $errors)) {
+                                    echo "<p class='red-text'>Category id is not valid</p>";
+                                }
                                 ?>
                                 <option disabled selected>Choose your option</option>
                                 <?php
-                                    $q1 = "SELECT cid, cname FROM category";
-                                    $r1 = mysqli_query($dbc, $q1);
-                                    confirm_query($r1, $q1);
+                                $q1 = "SELECT cid, cname FROM category";
+                                $r1 = mysqli_query($dbc, $q1);
+                                confirm_query($r1, $q1);
 
-                                    if (mysqli_num_rows($r1) > 0) {
-                                        while (list($cid, $cname) = mysqli_fetch_array($r1, MYSQLI_NUM)) {
-                                            echo "
+                                if (mysqli_num_rows($r1) > 0) {
+                                    while (list($cid, $cname) = mysqli_fetch_array($r1, MYSQLI_NUM)) {
+                                        echo "
                                                 <option value='{$cid}'>{$cname}</option>
                                             ";
-                                        }
                                     }
+                                }
                                 ?>
                             </select>
                             <label>Category</label>

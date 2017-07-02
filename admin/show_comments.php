@@ -1,5 +1,8 @@
 <?php
 require_once("includes/navigation.php");
+if (!is_admin()) {
+    redirect_to("login.php");
+}
 ?>
 
     <main>
@@ -40,7 +43,7 @@ require_once("includes/navigation.php");
                                             <td>{$comments['cmid']}</td>
                                             <td>{$comments['ptitle']}</td>
                                             <td>{$comments['uname']}</td>
-                                            <td><a href='#view-content-".$comments['cmid']."'>".substr($comments['cmcontent'], 0, 100)."</a> ...</td>
+                                            <td><a href='#view-content-" . $comments['cmid'] . "'>" . substr($comments['cmcontent'], 0, 100) . "</a> ...</td>
                                             <td>{$comments['date']}</td>
                                             <td><a class='remove-comment red-text' id-delete='{$comments['cmid']}' style='cursor: pointer;'><i class='material-icons'>delete</i></a></td>
                                         </tr>

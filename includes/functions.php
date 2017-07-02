@@ -3,19 +3,22 @@ ob_start();
 
 define("BASE_URL", "http://mycms.dev/");
 
-function confirm_query($r, $q) {
+function confirm_query($r, $q)
+{
     if (!$r) {
         die("Loi khi thuc hien query! Query is: \n" . $q);
     }
 }
 
-function redirect_to($url = '') {
+function redirect_to($url = '')
+{
     header("Location: " . BASE_URL . $url);
     ob_end_flush();
 }
 
 
-function pagination($display = 5, $id, $table, $url, $condition = null) {
+function pagination($display = 5, $id, $table, $url, $condition = null)
+{
     global $dbc;
     global $start;
 
@@ -47,20 +50,20 @@ function pagination($display = 5, $id, $table, $url, $condition = null) {
 
         // neu khong phai o trang dau thi se hien thi trang truoc
         if ($current_page != 1) {
-            $output .= "<li><a href='{$url}s=".($start - $display)."&p={$page}'>Previous</a></li>";
+            $output .= "<li><a href='{$url}s=" . ($start - $display) . "&p={$page}'>Previous</a></li>";
         }
 
         // hien thi nhung trang con lai
         for ($i = 1; $i <= $page; $i++) {
             if ($i != $current_page) {
-                $output .= "<li class='waves-effect'><a href='{$url}s=".($display * ($i - 1))."&p={$page}'>{$i}</a></li>";
+                $output .= "<li class='waves-effect'><a href='{$url}s=" . ($display * ($i - 1)) . "&p={$page}'>{$i}</a></li>";
             } else {
                 $output .= "<li class='active'><a>{$i}</a></li>";
             }
         } // end for
 
         if ($current_page != $page) {
-            $output .= "<li><a href='{$url}s=".($start + $display)."&p={$page}'>Next</a></li>";
+            $output .= "<li><a href='{$url}s=" . ($start + $display) . "&p={$page}'>Next</a></li>";
         }
     } // end section pagination
     $output .= "</ul></div>";
@@ -68,7 +71,8 @@ function pagination($display = 5, $id, $table, $url, $condition = null) {
     echo $output;
 }
 
-function excert_text($text, $length) {
+function excert_text($text, $length)
+{
     $safe_text = htmlentities($text, ENT_COMPAT, 'UTF-8');
     if (strlen($safe_text) > $length) {
         $cut = substr($safe_text, 0, $length);
@@ -80,7 +84,8 @@ function excert_text($text, $length) {
 }
 
 
-function count_view($pid) {
+function count_view($pid)
+{
     global $dbc;
     $ip = $_SERVER['REMOTE_ADDR'];
 
@@ -112,14 +117,15 @@ function count_view($pid) {
 }
 
 
-function sendmail($receive, $body, $success) {
+function sendmail($receive, $body)
+{
     $mail = new PHPMailer;
 
     $mail->isSMTP();                                      // Set mailer to use SMTP
     $mail->Host = 'smtp.gmail.com;';  // Specify main and backup SMTP servers
     $mail->SMTPAuth = true;                               // Enable SMTP authentication
-    $mail->Username = 'tuunguyen2795@gmail.com';                 // SMTP username
-    $mail->Password = 'Tunguyen02071994';                           // SMTP password
+    $mail->Username = 'gmail của ông';                 // SMTP username
+    $mail->Password = 'mật khẩu gamil của ông';                           // SMTP password
     $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
     $mail->Port = 25;                                    // TCP port to connect to
 
@@ -128,16 +134,31 @@ function sendmail($receive, $body, $success) {
     $mail->isHTML(true);                                  // Set email format to HTML
 
     $mail->Subject = 'TinVit email';
-    $mail->Body    = $body;
+    $mail->Body = $body;
 
-    if(!$mail->send()) {
-        $result = "<h4 class='center-align red-text'>Message could not be sent. <br>";
-        $result .= 'Mailer Error: ' . $mail->ErrorInfo . "</p>";
+    if (!$mail->send()) {
+        $result = false;
     } else {
-        $result = "<h4 class='center-align green-text'>{$success}</h4>";
+        $result = true;
     }
 
     return $result;
+}
+
+
+function is_logged_in()
+{
+
+    return (isset($_SESSION['uid']));
+
+}
+
+
+function is_admin()
+{
+
+    return (isset($_SESSION['urole']) && $_SESSION['urole'] == 0);
+
 }
 
 ?>
